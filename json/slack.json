@@ -1,0 +1,16 @@
+{
+    "channel": {
+        "": {
+            "url": "",
+            "receiver": ["here"]
+        },
+        "": {
+            "url": "",
+            "receiver": ["channel"]
+        }
+    },
+    "receiver": {
+        "channel": "<!channel>",
+        "here": "<!here>",
+    }
+}
