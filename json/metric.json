@@ -1,0 +1,10 @@
+{
+    "CPUUtilization": {
+        ".*": {
+            "error_level": "",
+            "error_effect": "",
+            "jira_epic": "",
+            "slack_channel": ""
+        }
+    }
+}
