@@ -1,0 +1,22 @@
+{
+    "url": "",
+    "email": "",
+    "project": {
+        "": {
+            "key": "",
+            "custom_field": {
+                "": ""
+            }
+        }
+    },
+    "epic": {
+        "": {
+            "parent": "",
+            "assignee": "",
+            "participants": [""]
+        }
+    },
+    "receiver": {
+        "": ""
+    }
+}
