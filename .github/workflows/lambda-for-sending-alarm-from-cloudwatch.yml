@@ -1,0 +1,62 @@
+# This is a basic workflow to help you get started with Actions
+
+name: lambda-share-iptv-spreadtopersonincharge CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/codeql-analysis.yml'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "workflow"
+  workflow:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ap-northeast-2 # Seoul
+      AWS_LAMBDA_FUNCTION_NAME: lambda-for-sending-alarm-from-cloudwatch
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Install Python Packages
+      - name: Install Python Packages
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}
+        run: |
+          mkdir packages
+          pip install -r requirements.txt -t packages/
+          ls -a packages
+          
+      # Make a Zip File
+      - name: Make a Zip File
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}
+        run: zip -rq ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip .
+
+      # Deploy to AWS Lambda
+      - name: Deploy to AWS Lambda
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}
+        run: |
+          aws lambda update-function-code \
+          --function-name ${{ env.AWS_LAMBDA_FUNCTION_NAME }} \
+          --zip-file fileb://${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip
+          
+      # Remove a Zip File
+      - name: Remove a Zip File
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}
+        run: rm ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip
