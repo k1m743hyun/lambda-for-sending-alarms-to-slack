@@ -8,6 +8,8 @@
 
 ### Environment
 
+- Python 3
+
 
 ### Installation
 
