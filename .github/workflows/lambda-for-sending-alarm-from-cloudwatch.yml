@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - '.github/workflows/codeql-analysis.yml'
+      - '.github/workflows/*'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,7 +25,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      
+      # Set up Python 3.8
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
 
       # Configure AWS credentials
       - name: Configure AWS credentials
@@ -37,7 +43,6 @@ jobs:
 
       # Install Python Packages
       - name: Install Python Packages
-        working-directory: ./${{ github.event.repository.name }}
         run: |
           mkdir packages
           pip install -r requirements.txt -t packages/
@@ -45,12 +50,10 @@ jobs:
           
       # Make a Zip File
       - name: Make a Zip File
-        working-directory: ./${{ github.event.repository.name }}
         run: zip -rq ${{ github.event.repository.name }}.zip .
 
       # Deploy to AWS Lambda
       - name: Deploy to AWS Lambda
-        working-directory: ./${{ github.event.repository.name }}
         run: |
           aws lambda update-function-code \
           --function-name ${{ github.event.repository.name }} \
@@ -58,5 +61,4 @@ jobs:
           
       # Remove a Zip File
       - name: Remove a Zip File
-        working-directory: ./${{ github.event.repository.name }}
         run: rm ${{ github.event.repository.name }}.zip
