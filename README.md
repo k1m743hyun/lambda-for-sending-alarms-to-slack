@@ -24,6 +24,7 @@ git clone https://github.com/k1m743hyun/lambda-for-sending-alarms-to-slack.git
 
 - Auto Run ./github/workflows/deploy-to-aws-lambda.yml After Edit the code and Push it
 
+
 ### License
 
 This project is licensed under the MIT License. See the `LICENSE.md` file for details
