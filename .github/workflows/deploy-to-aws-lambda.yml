@@ -21,7 +21,7 @@ jobs:
       AWS_REGION: ap-northeast-2 # Seoul
 
     # Skip running release workflow on forks
-    if: github.repository_owner == 'thkim0022'
+    if: github.repository_owner == 'k1m743hyun'
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
